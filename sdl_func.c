@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "sdl.h"
 
 int init_instance(SDL_Instance *instance)
@@ -11,8 +10,10 @@ int init_instance(SDL_Instance *instance)
 	}
 
 	/*Create a new Window Instance*/
-	instance->window = SDL_CreateWindow("SDL2 \\o/", SDL_WINDOWPOS_CENTERED,
-					    SDL_WINDOWPOS_CENTERED, 1260, 720, 0);
+	instance->window = SDL_CreateWindow("SDL2 - LEARNING GRAPHIC PROGRAMMING IN C",
+					    SDL_WINDOWPOS_CENTERED,
+					    SDL_WINDOWPOS_CENTERED,
+					    SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 	if (instance->window == NULL)
 	{
 		fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
@@ -22,7 +23,8 @@ int init_instance(SDL_Instance *instance)
 
 	/*Crete a new Renderer instance linked to the Window*/
 	instance->renderer = SDL_CreateRenderer(instance->window, -1,
-						SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+						SDL_RENDERER_ACCELERATED |
+						SDL_RENDERER_PRESENTVSYNC);
 	if (instance->renderer == NULL)
 	{
 		SDL_DestroyWindow(instance->window);
@@ -33,4 +35,26 @@ int init_instance(SDL_Instance *instance)
 
 	return (0);
 
+}
+
+
+int poll_events(void)
+{
+	SDL_Event event;
+	SDL_KeyboardEvent key;
+
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			return (1);
+		case SDL_KEYDOWN:
+			key = event.key;
+			if (key.keysym.scancode == 0x29)
+				return (1);
+			break;
+		}
+	}
+	return (0);
 }
