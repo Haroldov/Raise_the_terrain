@@ -58,3 +58,126 @@ int poll_events(void)
 	}
 	return (0);
 }
+
+float **file2matrix(char *filename)
+{
+	FILE *fileDesc = NULL;
+	char *buffer = NULL, *num;
+	size_t numBytes = 0;
+	int sw = 0;
+	unsigned int size = 0, i = 0, j = 0;
+	float **grid = NULL;
+
+	if (filename == NULL)
+		return (0);
+	fileDesc = fopen(filename, "r");
+	while (getline(&buffer, &numBytes, fileDesc) != -1)
+	{
+		j = 0;
+		if (sw == 0)
+		{
+			size = get_size(buffer, " \n");
+			grid = alloc_grid(size, size);
+			sw = 1;
+		}
+		num = strtok(buffer, " \n");
+		while (num != NULL)
+		{
+			grid[j][i] = strtof(num, NULL);
+			num = strtok(NULL, " \n");
+			j++;
+		}
+		free(buffer);
+		buffer = NULL;
+		i++;
+	}
+	return (grid);
+}
+
+/**
+ *alloc_grid - creates a 2 dimensional array of floats
+ *@width: width of the array
+ *@height: height of the array
+ *Return: a pointer to a 2 dimensional array of floats
+ */
+
+float **alloc_grid(int width, int height)
+{
+	float *tmp;
+	float **arr;
+	int i;
+	int size = width * height;
+
+	if (width <= 0 || height <= 0 || size <= 0)
+		return (NULL);
+
+	arr =  malloc(height * sizeof(float *));
+	tmp =  malloc(size * sizeof(float));
+
+	if (arr == NULL || tmp == NULL)
+	{
+		free(tmp);
+		free(arr);
+		return (NULL);
+	}
+
+
+	for (i = 0; i < height; i++)
+		arr[i] = tmp + (i * width);
+
+	for (i = 0; i < size; i++)
+		tmp[i] = 0;
+
+	return (arr);
+}
+
+/**
+ *split - splits a string according to the delimiter
+ *@str: pointer to the string
+ *@delim: pointer to the delimiter
+ *Return: a number
+ */
+unsigned int size;
+
+unsigned int get_size(char *str, const char *delim)
+{
+	char *buffer, *tmpCpy = strdup(str);
+	unsigned int wNum = 0;
+
+	if (*str == '\0')
+	{
+		free(tmpCpy);
+		return (-1);
+	}
+	/*Count the number of words to allocate memory*/
+	buffer = strtok(tmpCpy, delim);
+	wNum += 1;
+	while (buffer != NULL)
+	{
+		buffer = strtok(NULL, delim);
+		if (buffer != NULL)
+			wNum += 1;
+	}
+	free(tmpCpy);
+	size = wNum;
+	return (wNum);
+}
+
+/**
+ *free_grid - free a grid
+ *@grid: grid to be released
+ *@height: height of the grid
+ *Return: none
+ */
+
+void free_grid(float **grid, int height)
+{
+	if (grid == NULL || height == 0)
+	{
+	}
+	else
+	{
+		free(grid[0]);
+		free(grid);
+	}
+}

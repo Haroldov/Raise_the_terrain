@@ -1,1 +1,1 @@
-"-Wall" "-Werror" "-Wextra" "-pedantic" "-o" "exe"
+"-Wall" "-Werror" "-Wextra" "-pedantic" "-o" "terrain"
