@@ -10,7 +10,7 @@ void draw_grid(SDL_Instance instance, float **z)
 	int width = SCREEN_WIDTH - SCREEN_WIDTH * 0.2;
 	int height = SCREEN_HEIGHT - SCREEN_HEIGHT * 0.2;
 	int x = 0, y = 0, dx = (width / res) - 1, dy = (height / res) - 1;
-	int X = 0, Y = 0, Wx = 0, Wy = 0, xOffset = 270, yOffset = 200;
+	int X = 0, Y = 0, Wx = 0, Wy = 0, xOffset = 270, yOffset = 150;
 	int indx = 0, indy = 0;
 
 	SDL_SetRenderDrawColor(instance.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
